@@ -4,18 +4,19 @@ module.exports = app => {
     const getTasks = (req, res) => {
         var date = req.query.date ? new Date(req.query.date) : moment().endOf('day').toDate();
         date = date.getFullYear() + '-' +
-        ('00' + (date.getMonth() + 1)).slice(-2) + '-' +
-        ('00' + date.getDate()).slice(-2) + ' ' +
-        ('00' + date.getHours()).slice(-2) + ':' +
-        ('00' + date.getMinutes()).slice(-2) + ':' +
-        ('00' + date.getSeconds()).slice(-2);
-        console.log('Date after ====> ', date)
+            ('00' + (date.getMonth() + 1)).slice(-2) + '-' +
+            ('00' + date.getDate()).slice(-2);
+        console.log('Date after ====> ', `
+        SELECT * 
+        FROM Task 
+        WHERE UsuarioId = ${req.user.id} AND CONVERT(date, EstimateAt) >= '${date}'
+        ORDER BY estimateAt`)
 
         //Busca tudo
         app.config.sql.execute(`
                 SELECT * 
                 FROM Task 
-                WHERE UsuarioId = ${req.user.id} AND EstimateAt >= '${date}'
+                WHERE UsuarioId = ${req.user.id} AND CONVERT(date, EstimateAt) >= '${date}'
                 ORDER BY estimateAt`)
             .then((result) => {
                 let lstTask = result[0];

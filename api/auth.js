@@ -10,7 +10,7 @@ module.exports = app => {
             return res.status(400).send('Dados incompletos');
         }
 
-        app.config.sql.execute(`SELECT * FROM Usuario WHERE Email = '${req.body.email}'`)
+        app.config.sql.execute(`SELECT * FROM Usuario WHERE LOWER(Email) = LOWER('${req.body.email}')`)
             .then((result) => {
                 let user = result[0];
                 if (user) {
@@ -22,6 +22,7 @@ module.exports = app => {
                         res.json({
                             id: user.Id,
                             nome: user.Nome,
+                            email: user.Email,
                             token: jwt.encode(payload, authSecret)
                         })
                     });

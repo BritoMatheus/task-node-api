@@ -10,8 +10,8 @@ CREATE TABLE Task
 (
 	Id int IDENTITY(1,1) PRIMARY KEY,
 	Descricao varchar(200),
-	EstimateAt DateTime NULL,
-	DoneAt DateTime null,
+	EstimateAt Date NULL,
+	DoneAt Date null,
 	UsuarioId int,
 	Constraint Task_Usuario FOREIGN KEY (UsuarioId) REFERENCES Usuario
 )
